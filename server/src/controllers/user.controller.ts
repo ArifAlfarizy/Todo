@@ -1,8 +1,9 @@
 import type { Request, Response, NextFunction } from "express";
-import type { createUsers } from "../services/user.service.js";
+import { createUsers } from "../services/user.service.js";
 import * as userService from "../services/user.service.js";
+import { error } from "node:console";
 
-export const getUsers = async (
+export const getUsersController = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -19,16 +20,16 @@ export const getUsers = async (
   }
 };
 
-export const createUser = async (
+export const createUserController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const { user } = req.body;
+    const newUser = await userService.createUsers(req.body);
 
-    const newUser = await userService.createUsers(user);
-
-    res.send(200).json(newUser);
-  } catch (err) {}
+    res.status(200).json(newUser);
+  } catch (err) {
+    console.error("error", err);
+  }
 };
