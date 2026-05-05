@@ -9,10 +9,6 @@ app.use(express.json());
 app.use("/users", userRouter);
 app.use("/auth", authRouter);
 
-app.get("/", (req, res) => {
-  res.send("tes");
-});
-
 app.listen(PORT, () => {
   console.log(`Server running on PORT: ${PORT}`);
 });

@@ -5,6 +5,6 @@ const secretKey = process.env.SECRET_KEY!;
 
 export const generateToken = (payload: UserPayload) => {
   return jwt.sign(payload, secretKey, {
-    expiresIn: "1h",
+    expiresIn: "7d",
   });
 };

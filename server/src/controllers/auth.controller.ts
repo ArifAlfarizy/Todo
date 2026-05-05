@@ -5,6 +5,7 @@ import { genSaltSync, hashSync } from "bcrypt-ts";
 import { prisma } from "../lib/prisma.js";
 import type { User } from "../../generated/prisma/index.js";
 import { createUser, getUserByEmail } from "../services/user.service.js";
+import { generateToken } from "../utils/jwt.util.js";
 const secretKey = process.env.SECRET_KEY;
 
 export const register = async (
@@ -41,9 +42,7 @@ export const register = async (
       return res.status(400).json({ message: "Secret Key is not defined!" });
     }
 
-    const token = jwt.sign(payload, secretKey, {
-      expiresIn: "7d",
-    });
+    const token = generateToken(payload);
 
     return res.status(201).json({
       token,
