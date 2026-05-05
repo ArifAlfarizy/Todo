@@ -6,14 +6,24 @@ export interface User {
   readonly createdAt: Date;
 }
 
-export interface createUser {
+export interface CreateUser {
   email: string;
   username?: string;
   password: string;
 }
 
-export interface getUser {
+export interface GetUser {
   readonly email: string;
   readonly username?: string;
   readonly password: string;
 }
+
+export type UserPayload = {
+  userId: string;
+};
+
+export type RegisterBody = {
+  email: string;
+  username?: string;
+  password: string;
+};
