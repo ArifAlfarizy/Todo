@@ -85,6 +85,8 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
 
     const token = generateToken(payload);
 
+    res.cookie("token", token);
+
     return res.status(201).json({
       message: "Login successfully",
       token,
@@ -93,6 +95,28 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
         name: existingUser.username,
         email: existingUser.email,
       },
+    });
+  } catch (err) {
+    console.error("error", err);
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    const token = req.cookies.token;
+
+    if (!token) {
+      return res.status(400).json({
+        success: false,
+        message: "Token tidak ditemukan",
+      });
+    }
+
+    res.clearCookie("token", {});
+
+    return res.status(200).json({
+      success: true,
+      message: "Berhasil logout",
     });
   } catch (err) {
     console.error("error", err);
