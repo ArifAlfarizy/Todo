@@ -9,3 +9,7 @@ export const getAllTodo = async (authorId: string) => {
   });
 };
 
+export const createTodo = async (data: Todo) => {
+  return prisma.post.create({ data });
+};
+

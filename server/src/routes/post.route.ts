@@ -1,8 +1,9 @@
 import express from "express";
-import { getAllTodoController } from "../controllers/post.controller.js";
+import { createTodoController, getAllTodoController } from "../controllers/post.controller.js";
 
 const postRouter = express.Router();
 
-postRouter.get("/:userId", getAllTodoController);
+postRouter.get("/", getAllTodoController);
+postRouter.post("/", createTodoController);
 
 export default postRouter;
