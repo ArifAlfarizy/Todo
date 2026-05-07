@@ -1,4 +1,8 @@
-import { createTodo, getAllTodo } from "../services/post.service.js";
+import {
+  createTodo,
+  deleteTodo,
+  getAllTodo,
+} from "../services/post.service.js";
 import type { Request, Response } from "express";
 import type { Todo } from "../types/todo.type.js";
 
@@ -41,6 +45,20 @@ export const createTodoController = async (
     res.status(201).json({
       success: true,
       data: todo,
+    });
+  } catch (err) {
+    console.error("error", err);
+  }
+};
+
+export const deleteTodoController = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    await deleteTodo(id);
+
+    res.status(201).json({
+      success: true,
+      message: "Deleted successfully",
     });
   } catch (err) {
     console.error("error", err);

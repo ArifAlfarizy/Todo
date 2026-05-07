@@ -13,3 +13,10 @@ export const createTodo = async (data: Todo) => {
   return prisma.post.create({ data });
 };
 
+export const deleteTodo = async (id: number) => {
+  return prisma.post.delete({
+    where: {
+      id,
+    },
+  });
+};
