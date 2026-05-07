@@ -29,6 +29,6 @@ export type RegisterBody = {
 };
 
 export type LoginBody = {
-  email: string, 
-  password: string
-}
+  email: string;
+  password: string;
+};

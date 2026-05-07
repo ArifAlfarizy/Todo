@@ -4,10 +4,7 @@ import type {
   UserPayload,
 } from "../types/user.type.js";
 import type { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 import { compare, genSaltSync, hashSync } from "bcrypt-ts";
-import { prisma } from "../lib/prisma.js";
-import type { User } from "../../generated/prisma/index.js";
 import { createUser, getUserByEmail } from "../services/user.service.js";
 import { generateToken } from "../utils/jwt.util.js";
 const secretKey = process.env.SECRET_KEY;
