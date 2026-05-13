@@ -2,6 +2,7 @@ import {
   createTodo,
   deleteTodo,
   getAllTodo,
+  getTodoById,
   updateTodo,
 } from "../services/post.service.js";
 import type { Request, Response } from "express";
@@ -54,11 +55,20 @@ export const createTodoController = async (
 
 export const updateTodoController = async (req: Request, res: Response) => {
   try {
+    const userId = req.user.userId;
+
     const id = Number(req.params.id);
     const { title, content } = req.body;
-    const todo = { title, content };
 
-    const updatedTodo = await updateTodo(id, todo);
+    const checkTodo = await getTodoById(id, userId);
+
+    if (!checkTodo) {
+      return res.status(409).json({
+        message: "Forbidden",
+      });
+    }
+
+    const updatedTodo = await updateTodo(id, title, content);
 
     res.status(200).json({
       success: true,
@@ -71,7 +81,17 @@ export const updateTodoController = async (req: Request, res: Response) => {
 
 export const deleteTodoController = async (req: Request, res: Response) => {
   try {
+    const userId = req.user.userId;
     const id = Number(req.params.id);
+
+    const todo = await getTodoById(id, userId);
+
+    if (!todo) {
+      return res.status(409).json({
+        message: "Forbidden",
+      });
+    }
+
     await deleteTodo(id);
 
     res.status(201).json({
@@ -82,3 +102,5 @@ export const deleteTodoController = async (req: Request, res: Response) => {
     console.error("error", err);
   }
 };
+
+// Add user id validation
