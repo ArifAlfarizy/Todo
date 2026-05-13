@@ -2,6 +2,7 @@ import {
   createTodo,
   deleteTodo,
   getAllTodo,
+  updateTodo,
 } from "../services/post.service.js";
 import type { Request, Response } from "express";
 import type { Todo } from "../types/todo.type.js";
@@ -45,6 +46,23 @@ export const createTodoController = async (
     res.status(201).json({
       success: true,
       data: todo,
+    });
+  } catch (err) {
+    console.error("error", err);
+  }
+};
+
+export const updateTodoController = async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+    const { title, content } = req.body;
+    const todo = { title, content };
+
+    const updatedTodo = await updateTodo(id, todo);
+
+    res.status(200).json({
+      success: true,
+      data: updatedTodo,
     });
   } catch (err) {
     console.error("error", err);
