@@ -6,18 +6,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: UserPayload; // extends Request
-      cookies: {
-        token?: string;
-        [key: string]: string | undefined;
-      };
-    }
-  }
-}
-
-declare global {
-  namespace Express {
-    interface Request {
-      todo?: Todo;
+      todo?: Todo
     }
   }
 }

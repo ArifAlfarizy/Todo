@@ -6,8 +6,16 @@ import type {
 import type { Request, Response } from "express";
 import { compare, genSaltSync, hashSync } from "bcrypt-ts";
 import { createUser, getUserByEmail } from "../services/user.service.js";
-import { generateToken } from "../utils/jwt.util.js";
-const secretKey = process.env.SECRET_KEY;
+import {
+  generateAccessToken,
+  generateRefreshToken,
+} from "../utils/jwt.util.js";
+import jwt from "jsonwebtoken";
+const refreshSecretKey = process.env.REFRESH_SECRET_KEY;
+
+if (!refreshSecretKey) {
+  throw new Error("REFRESH_SECRET_KEY is missing");
+}
 
 export const register = async (
   req: Request<{}, {}, RegisterBody>,
@@ -39,14 +47,17 @@ export const register = async (
       userId: user.id,
     };
 
-    if (!secretKey) {
-      return res.status(400).json({ message: "Secret Key is not defined!" });
-    }
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
 
-    const token = generateToken(payload);
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
 
     return res.status(201).json({
-      token,
+      accessToken,
       user: { id: String(user.id), name: user.username, email: user.email },
     });
   } catch (err) {
@@ -80,13 +91,19 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
       userId: existingUser.id,
     };
 
-    const token = generateToken(payload);
+    const accessToken = generateAccessToken(payload);
 
-    res.cookie("token", token);
+    const refreshToken = generateRefreshToken(payload);
+
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
 
     return res.status(201).json({
       message: "Login successfully",
-      token,
+      accessToken,
       user: {
         id: String(existingUser.id),
         name: existingUser.username,
@@ -98,22 +115,46 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
   }
 };
 
+export const refresh = async (req: Request, res: Response) => {
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(400).json({
+      success: false,
+      message: "Token not found",
+    });
+  }
+
+  const decoded = jwt.verify(refreshToken, refreshSecretKey) as UserPayload;
+
+  const accessToken = generateAccessToken(decoded);
+
+  return res.status(200).json({
+    success: true,
+    token: accessToken,
+  });
+};
+
 export const logout = async (req: Request, res: Response) => {
   try {
-    const token = req.cookies.token;
+    const refreshToken = req.cookies.refreshToken;
 
-    if (!token) {
+    if (!refreshToken) {
       return res.status(400).json({
         success: false,
-        message: "Token tidak ditemukan",
+        message: "Token not found",
       });
     }
 
-    res.clearCookie("token", {});
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    });
 
     return res.status(200).json({
       success: true,
-      message: "Berhasil logout",
+      message: "Logged out",
     });
   } catch (err) {
     console.error("error", err);

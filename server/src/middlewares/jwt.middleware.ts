@@ -2,32 +2,34 @@ import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import type { UserPayload } from "../types/user.type.js";
 
-if (!process.env.SECRET_KEY) {
+const accessSecretKey = process.env.ACCESS_SECRET_KEY;
+
+if (!accessSecretKey) {
   throw new Error("SECRET_KEY is not defined");
 }
-
-const secretKey: string = process.env.SECRET_KEY;
-
 export const verifyToken = (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const token = req.cookies.token;
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
+    const accessToken = authHeader?.split(" ")[1];
+
+    if (!accessToken) {
       return res.status(401).json({
         error: "Access denied. No token provided.",
       });
     }
 
-    const decoded = jwt.verify(token, secretKey) as UserPayload;
+    const decoded = jwt.verify(accessToken, accessSecretKey) as UserPayload;
 
     req.user = decoded;
 
     next();
   } catch (err) {
+    console.log(err)
     return res.status(401).json({ error: "Invalid or expired token." });
   }
 };
