@@ -1,5 +1,5 @@
-import "./globals.css";
-import Navbar from "../components/Navbar";
+
+import Navbar from "@/src/components/Navbar";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +13,7 @@ export default function RootLayout({
   return (
     <html className={cn("font-sans", geist.variable)}>
       <body className="flex">
+        <Navbar></Navbar>
         <main className="flex flex-1 items-center justify-center">
           {children}
         </main>
