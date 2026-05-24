@@ -3,10 +3,18 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import cookieParser from "cookie-parser";
 import postRouter from "./routes/post.route.js";
+import cors from "cors";
 import { verifyToken } from "./middlewares/jwt.middleware.js";
+
 const PORT = process.env.PORT || 5000;
 
 const app = express();
+app.use(
+  cors({
+    origin: "http://192.168.56.1:3000",
+    credentials: true,
+  }),
+);
 app.use(express.json());
 app.use(cookieParser());
 
