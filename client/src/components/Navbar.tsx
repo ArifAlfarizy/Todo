@@ -3,9 +3,11 @@ import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import Link from "next/link";
+import { useAuth } from "@/src/contexts/AuthContext";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
 
   function handleClick() {
     setIsOpen(!isOpen);
@@ -24,13 +26,20 @@ const Navbar = () => {
           </Link>
         </div>
         <div>
-          <Link href="/login">
+          {isAuthenticated ? (
             <button
-              className={`cursor-pointer rounded-md bg-black text-white ${isOpen ? "px-3" : "px-2"} py-1`}
+              onClick={() => logout()}
+              className="cursor-pointer rounded-md bg-red-600 text-white px-2 py-1"
             >
-              Login
+              Logout
             </button>
-          </Link>
+          ) : (
+            <Link href="/login">
+              <button className="cursor-pointer rounded-md bg-black text-white px-2 py-1">
+                Login
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
