@@ -58,7 +58,7 @@ export const register = async (
 
     return res.status(201).json({
       accessToken,
-      user: { id: String(user.id), name: user.username, email: user.email },
+      user: { id: String(user.id), username: user.username, email: user.email },
     });
   } catch (err) {
     console.error("error", err);
@@ -106,7 +106,7 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
       accessToken,
       user: {
         id: String(existingUser.id),
-        name: existingUser.username,
+        username: existingUser.username,
         email: existingUser.email,
       },
     });
