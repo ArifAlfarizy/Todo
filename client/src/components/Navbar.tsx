@@ -29,7 +29,7 @@ const Navbar = () => {
           {isAuthenticated ? (
             <button
               onClick={() => logout()}
-              className="cursor-pointer rounded-md bg-red-600 text-white px-2 py-1"
+              className="cursor-pointer rounded-md bg-red-900 text-white px-2 py-1"
             >
               Logout
             </button>

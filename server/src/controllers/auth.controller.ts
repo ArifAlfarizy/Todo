@@ -5,7 +5,7 @@ import type {
 } from "../types/user.type.js";
 import type { Request, Response } from "express";
 import { compare, genSaltSync, hashSync } from "bcrypt-ts";
-import { createUser, getUserByEmail } from "../services/user.service.js";
+import { createUser, getUserByEmail, getUserById } from "../services/user.service.js";
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -54,6 +54,7 @@ export const register = async (
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 
     return res.status(201).json({
@@ -99,6 +100,7 @@ export const login = async (req: Request<{}, {}, LoginBody>, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
+      maxAge: 7 * 24 * 60 * 60 * 1000, 
     });
 
     return res.status(201).json({
@@ -119,20 +121,31 @@ export const refresh = async (req: Request, res: Response) => {
   const refreshToken = req.cookies.refreshToken;
 
   if (!refreshToken) {
-    return res.status(400).json({
-      success: false,
-      message: "Token not found",
-    });
+    return res.status(401).json({ message: "Token not found" });
   }
 
-  const decoded = jwt.verify(refreshToken, refreshSecretKey) as UserPayload;
+  try {
+    const decoded = jwt.verify(refreshToken, refreshSecretKey) as UserPayload;
 
-  const accessToken = generateAccessToken(decoded);
+    const user = await getUserById(decoded.userId);
 
-  return res.status(200).json({
-    success: true,
-    token: accessToken,
-  });
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    const accessToken = generateAccessToken({ userId: user.id });
+
+    return res.status(200).json({
+      accessToken,
+      user: {
+        id: String(user.id),
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch {
+    return res.status(401).json({ message: "Invalid token" });
+  }
 };
 
 export const logout = async (req: Request, res: Response) => {

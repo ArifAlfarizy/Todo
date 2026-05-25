@@ -29,7 +29,6 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
 
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    console.log("1. start");
     setError("");
 
     if (password !== confirmPassword) {
@@ -38,16 +37,12 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
     }
 
     setLoading(true);
-    console.log("2. before register call");
 
     try {
       await register(email, password, username);
-      console.log("3. register success");
     } catch (err: any) {
-      console.log("4. error:", err);
       setError(err instanceof Error ? err.message : "Failed to create account");
     } finally {
-      console.log("5. finally");
       setLoading(false);
     }
   };
