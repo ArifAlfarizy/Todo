@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
+import Link from "next/dist/client/link";
 
 export function LoginForm({
   className,
@@ -83,7 +84,10 @@ export function LoginForm({
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <a href="#">Sign up</a>
+                    Don&apos;t have an account? 
+                  <Link href="/register">
+                  Sign up
+                  </Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>
