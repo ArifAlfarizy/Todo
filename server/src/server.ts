@@ -6,12 +6,12 @@ import postRouter from "./routes/post.route.js";
 import cors from "cors";
 import { verifyToken } from "./middlewares/jwt.middleware.js";
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 const app = express();
 app.use(
   cors({
-   origin: 'http://localhost:3000',
+   origin: ['http://localhost:3000', 'http://192.168.110.242:3000'],
     credentials: true,
   }),
 );

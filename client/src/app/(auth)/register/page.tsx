@@ -15,10 +15,28 @@ export default function Page() {
     }
   }, [loading, isAuthenticated]);
 
-  if (loading) return null;
+
+  if (loading)
+    return (
+      <div
+        className="flex min-h-svh w-full"
+        style={{
+          backgroundImage: "url('/blob-haikei.svg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+    );
 
   return (
-    <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+    <div
+      className="flex min-h-svh w-full items-center justify-center p-6 md:p-10"
+      style={{
+        backgroundImage: "url('/blob-haikei.svg')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
       <div className="w-full max-w-sm">
         <SignupForm />
       </div>
