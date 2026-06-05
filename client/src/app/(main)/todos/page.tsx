@@ -19,12 +19,12 @@ export default function TodosPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // form tambah
+ 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [adding, setAdding] = useState(false);
 
-  // edit
+ 
   const [editId, setEditId] = useState<number | null>(null);
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
