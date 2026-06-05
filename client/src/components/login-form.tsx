@@ -78,6 +78,9 @@ export function LoginForm({
                 </div>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
               </Field>
+              <div>
+                {error}
+              </div>
               <Field>
                 <Button type="submit">Login</Button>
                 <Button variant="outline" type="button">
