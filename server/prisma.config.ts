@@ -7,6 +7,10 @@ if (!process.env["DATABASE_URL"]) {
   throw new Error("DATABASE_URL is not set");
 }
 
+if (!process.env["DIRECT_URL"]) {
+  throw new Error("DIRECT_URL is not set");
+}
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
@@ -14,5 +18,6 @@ export default defineConfig({
   },
   datasource: {
     url: process.env["DATABASE_URL"],
+    directUrl: process.env["DIRECT_URL"],
   },
 });

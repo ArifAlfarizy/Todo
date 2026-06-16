@@ -76,21 +76,28 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
               </Field>
               <div className="text-red-500">
                 {error}
               </div>
               <Field>
+                {error && (
+                  <p className="text-sm font-medium text-red-500">{error}</p>
+                )}
                 <Button type="submit">Login</Button>
                 <Button variant="outline" type="button">
                   Login with Google
                 </Button>
                 <FieldDescription className="text-center">
-                    Don&apos;t have an account? 
-                  <Link href="/register">
-                  Sign up
-                  </Link>
+                  Don&apos;t have an account?
+                  <Link href="/register">Sign up</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

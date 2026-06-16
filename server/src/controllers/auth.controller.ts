@@ -4,7 +4,7 @@ import type {
   UserPayload,
 } from "../types/user.type.js";
 import type { Request, Response } from "express";
-import { compare, genSaltSync, hashSync } from "bcrypt-ts";
+import { compare, genSalt, hash} from "bcrypt-ts";
 import { createUser, getUserByEmail, getUserById } from "../services/user.service.js";
 import {
   generateAccessToken,
@@ -34,9 +34,9 @@ export const register = async (
       return res.status(409).json({ message: "Email already registered!" });
     }
 
-    const salt = genSaltSync(10); // move salt to .env
-    const hashedPassword = hashSync(password, salt);
-
+  
+    const salt = await genSalt(5);
+    const hashedPassword = await hash(password, salt);
     const user = await createUser({
       email,
       username: username || "",

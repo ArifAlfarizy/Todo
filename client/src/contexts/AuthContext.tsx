@@ -62,19 +62,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     password: string,
     username: string,
   ) => {
-    console.log("A. register called");
     try {
-      console.log("B. before api call");
       const { data } = await apiClient.post<{
         accessToken: string;
         user: User;
       }>("/auth/register", { email, password, username });
-      console.log("C. api response:", data);
       setUser(data.user);
       setAccessToken(data.accessToken);
       router.push("/todos");
     } catch (error) {
-      console.log("D. error:", error);
       const axiosError = error as AxiosError<{ message: string }>;
       throw new Error(
         axiosError.response?.data?.message || "Registration failed",
@@ -90,7 +86,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }>("/auth/login", { email, password });
       setUser(data.user);
       setAccessToken(data.accessToken);
-      console.log(data);
       router.push("/todos");
     } catch (error) {
       const axiosError = error as AxiosError<{ message: string }>;

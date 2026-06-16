@@ -9,19 +9,10 @@ import { verifyToken } from "./middlewares/jwt.middleware.js";
 const PORT = process.env.PORT || 8000;
 
 const app = express();
-const allowedOrigins = ["http://localhost:3000", "http://127.0.0.1:3000"];
 
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error(`CORS blocked: ${origin}`));
-      }
-    },
+    origin: ['http://localhost:3000', 'http://localhost:3001', 'http://127.0.0.1:3000', 'http://192.168.110.242:3000'],
     credentials: true,
   }),
 );
