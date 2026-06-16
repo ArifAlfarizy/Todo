@@ -88,9 +88,6 @@ export function LoginForm({
                 {error}
               </div>
               <Field>
-                {error && (
-                  <p className="text-sm font-medium text-red-500">{error}</p>
-                )}
                 <Button type="submit">Login</Button>
                 <Button variant="outline" type="button">
                   Login with Google
