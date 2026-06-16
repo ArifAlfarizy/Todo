@@ -21,7 +21,7 @@ const Navbar = () => {
         <div>
           <MenuIcon
             onClick={handleClick}
-            className={`hovering ${isOpen ? "self-start ml-6 mb-5" : null}`}
+            className={`hovering ${isOpen ? "mb-5 ml-6 self-start" : null}`}
           />
 
           {isOpen && (
