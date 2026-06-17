@@ -1,4 +1,5 @@
 # Todo App — Local Setup Guide
+Try it out : https://todo-xtvf-el9ptbnrt-arif19.vercel.app/
 
 Project ini terdiri dari dua bagian:
 
